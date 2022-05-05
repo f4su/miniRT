@@ -6,7 +6,7 @@
 /*   By: ioromero <ioromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 09:48:17 by jgainza-          #+#    #+#             */
-/*   Updated: 2022/05/03 13:06:31 by jgainza-         ###   ########.fr       */
+/*   Updated: 2022/05/05 19:32:37 by ioromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int	ft_save_pln(char *str, t_info *info, int i)
 	temp = ft_substr(str, i - j, j);
 	if (ft_strlen(temp) == 0 || ft_check_rgb(temp, info, k++, PLN_) == 1)
 		return (ft_free(temp, 1));
-	return (ft_free(temp, 0));
+	ft_space_hoop(str, (int *)&i);
+	if (str[i] == '\n' || !str[i])
+		return (ft_free(temp, 0));
+	return (ft_free(temp, 1));
 }
 
 int	ft_save_sph(char *str, t_info *info, int i)
@@ -55,7 +58,10 @@ int	ft_save_sph(char *str, t_info *info, int i)
 	temp = ft_substr(str, i - j, j);
 	if (ft_strlen(temp) == 0 || ft_check_rgb(temp, info, k++, SPH_) == 1)
 		return (ft_free(temp, 1));
-	return (ft_free(temp, 0));
+	ft_space_hoop(str, (int *)&i);
+	if (str[i] == '\n' || !str[i])
+		return (ft_free(temp, 0));
+	return (ft_free(temp, 1));
 }
 
 static int	ft_save_cyl_help(t_info *info, int i, int k, char *str)
@@ -72,7 +78,10 @@ static int	ft_save_cyl_help(t_info *info, int i, int k, char *str)
 	temp = ft_substr(str, i - j, j);
 	if (ft_strlen(temp) == 0 || ft_check_rgb(temp, info, k, CYL_) == 1)
 		return (ft_free(temp, 1));
-	return (ft_free(temp, 0));
+	ft_space_hoop(str, (int *)&i);
+	if (str[i] == '\n' || !str[i])
+		return (ft_free(temp, 0));
+	return (ft_free(temp, 1));
 }
 
 int	ft_save_cyl(char *str, t_info *info, int i)

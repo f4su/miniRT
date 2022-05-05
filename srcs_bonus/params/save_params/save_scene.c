@@ -6,7 +6,7 @@
 /*   By: ioromero <ioromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 09:46:21 by jgainza-          #+#    #+#             */
-/*   Updated: 2022/04/07 14:07:53 by jgainza-         ###   ########.fr       */
+/*   Updated: 2022/05/05 19:32:37 by ioromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	ft_save_amb(char *str, t_info *info, int i)
 	temp = ft_substr(str, i - j, j);
 	if (ft_strlen(temp) == 0 || ft_check_rgb(temp, info, 0, AMB_) == 1)
 		return (ft_free(temp, 1));
-	return (ft_free(temp, 0));
+	ft_space_hoop(str, (int *)&i);
+	if (str[i] == '\n' || !str[i])
+		return (ft_free(temp, 0));
+	return (ft_free(temp, 1));
 }
 
 int	ft_save_cam(char *str, t_info *info, int i)
@@ -65,7 +68,10 @@ int	ft_save_cam(char *str, t_info *info, int i)
 	temp = ft_substr(str, i - j, j);
 	if (ft_strlen(temp) == 0 || ft_check_fov(temp, info) == 1)
 		return (ft_free(temp, 1));
-	return (ft_free(temp, 0));
+	ft_space_hoop(str, (int *)&i);
+	if (str[i] == '\n' || !str[i])
+		return (ft_free(temp, 0));
+	return (ft_free(temp, 1));
 }
 
 int	ft_save_lgh(char *str, t_info *info, int i)
@@ -82,5 +88,8 @@ int	ft_save_lgh(char *str, t_info *info, int i)
 	temp = ft_substr(str, i - j, j);
 	if (ft_strlen(temp) == 0 || ft_check_ratio(temp, info, LGH_) == 1)
 		return (ft_free(temp, 1));
-	return (ft_free(temp, 0));
+	ft_space_hoop(str, (int *)&i);
+	if (str[i] == '\n' || !str[i])
+		return (ft_free(temp, 0));
+	return (ft_free(temp, 1));
 }
