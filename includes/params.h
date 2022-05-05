@@ -6,7 +6,7 @@
 /*   By: ioromero <ioromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 15:19:08 by ioromero          #+#    #+#             */
-/*   Updated: 2022/04/28 18:44:55 by ioromero         ###   ########.fr       */
+/*   Updated: 2022/05/03 13:04:19 by jgainza-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "vec.h"
 
-enum e_type {pln, sph, cyl};
+enum e_type {p, s, c};
 
 typedef struct s_matrix
 {

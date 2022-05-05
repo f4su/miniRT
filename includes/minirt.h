@@ -6,7 +6,7 @@
 /*   By: ioromero <ioromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 13:26:31 by jgainza-          #+#    #+#             */
-/*   Updated: 2022/04/29 18:55:33 by jgainza-         ###   ########.fr       */
+/*   Updated: 2022/05/05 18:24:00 by ioromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include "error.h"
 # include <stdio.h>
 # include <math.h>
+# include <pthread.h>
 
 typedef struct s_data
 {
@@ -71,6 +72,8 @@ typedef struct s_info
 	struct s_params	prm;
 	struct s_data	data;
 	struct s_vars	vars;
+	pthread_mutex_t	m_loops;
+	int				x;
 }					t_info;
 
 /*main*/
@@ -124,13 +127,28 @@ t_vec3		ft_vec_by_matrix(t_vec3 dir, t_matrix mat);
 double		ft_hit(t_object obj, t_vec3 origin, t_vec3 dir);
 
 /*colors*/
+int			ft_get_r(int color);
+int			ft_get_g(int color);
+int			ft_get_b(int color);
+int			ft_check_color(int color);
 int			ft_add_colors(int a, int c);
+int			ft_add_colors2(int a, int c, int d);
+int			ft_mult_colors(int a, double c);
 int			ft_create_trgb(int t, int r, int g, int b);
+int			ft_obj_color(t_object obj);
+double		ft_light_source_br(t_vec3 hit_point, t_light lgh, t_vec3 norm);
+int			ft_amb_light(int amb_color, int obj_color, double ratio);
+int			ft_diff_light(int obj_color, double ratio);	
+double		ft_spec_light(t_vec3 norm, t_vec3 hit_point, t_light lgh,
+				t_vec3 ray_dir);
 int			ft_get_color(t_object obj, t_ray ray,
 				t_params prm, double distance);
-int			ft_ray_cast(t_object obj);
 
 /*utils*/
 void		ft_swap(double *a, double *b);
+double		ft_calc_root(double a, double b, double c, double d);
+double		ft_cyl_hit_aux(t_vec3 sub, t_vec3 multh, t_cylinder cyl, t_vec3 p);
+double		ft_absolute_val(double i);
+int			ft_pixel_color(t_info *info, t_ray ray, int i, int color);
 
 #endif

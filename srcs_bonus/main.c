@@ -6,33 +6,11 @@
 /*   By: ioromero <ioromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 13:16:05 by jgainza-          #+#    #+#             */
-/*   Updated: 2022/05/05 18:24:07 by ioromero         ###   ########.fr       */
+/*   Updated: 2022/05/05 18:23:34 by ioromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-
-int	ft_pixel_color(t_info *info, t_ray ray, int i, int color)
-{
-	double	closer;
-	double	distance;
-	int		save_i;
-
-	closer = INFINITY;
-	save_i = -1;
-	while (++i < info->prm.num_obj)
-	{
-		distance = ft_hit(info->prm.obj[i], ray.ori, ray.dir);
-		if (distance > 0 && distance < closer)
-		{
-			closer = distance;
-			save_i = i;
-		}
-	}
-	if (save_i != -1)
-		color = ft_get_color(info->prm.obj[save_i], ray, info->prm, closer);
-	return (color);
-}
 
 static t_vec3	ft_ray_to_world(t_camera *cam, int x, int y)
 {
@@ -62,25 +40,51 @@ static t_ray	ft_raygun_mk2(t_params *prm, int x, int y)
 	return (ray);
 }
 
-void	ft_ray_tracer(t_info *info)
+void	*ft_loop(void *v_info)
 {
+	t_info	*info;
 	t_ray	ray;
 	int		color;
-	int		x;
-	int		y;
+	int		xy[2];
+	int		x2;
 
-	y = -1;
-	ft_move_cam(&info->prm.cam);
-	while (++y < HEIGHT)
+	info = v_info;
+	x2 = info->x;
+	info->x += WIDTH / 12;
+	pthread_mutex_unlock(&info->m_loops);
+	xy[1] = -1;
+	while (++xy[1] < HEIGHT)
 	{
-		x = -1;
-		while (++x < WIDTH)
+		xy[0] = x2 - 1;
+		while (++xy[0] < (WIDTH / 12 + x2))
 		{
-			ray = ft_raygun_mk2(&info->prm, x, y);
+			ray = ft_raygun_mk2(&info->prm, xy[0], xy[1]);
 			color = ft_pixel_color(info, ray, -1, 0x000000);
-			my_mlx_pixel_put(&info->data, x, y, color);
+			my_mlx_pixel_put(&info->data, xy[0], xy[1], color);
 		}
 	}
+	return (0);
+}
+
+void	ft_ray_tracer(t_info *info)
+{
+	pthread_t	loops[12];
+	int			i;
+
+	i = -1;
+	info->x = 0;
+	ft_move_cam(&info->prm.cam);
+	pthread_mutex_init(&info->m_loops, NULL);
+	while (++i < 12)
+	{
+		pthread_mutex_lock(&info->m_loops);
+		if (pthread_create(&loops[i], NULL, ft_loop, info))
+			return ;
+	}
+	pthread_mutex_destroy (&info->m_loops);
+	i = -1;
+	while (++i < 12)
+		pthread_join (loops[i], NULL);
 }
 
 int	main(int argc, char **argv)

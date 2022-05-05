@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_color.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ioromero <ioromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgainza- <jgainza-@student.42urduli>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 15:59:41 by jgainza-          #+#    #+#             */
-/*   Updated: 2022/05/05 17:06:07 by ioromero         ###   ########.fr       */
+/*   Updated: 2022/05/05 14:33:59 by jgainza-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_get_color(t_object obj, t_ray ray, t_params prm, double distance)
 	t_vec3	norm;
 	t_vec3	hit_point;
 	t_vec3	light_vec;
-	int		color[2];
+	int		color[3];
 	double	br;
 
 	hit_point = ft_vec_add(ft_vec_multiply(ray.dir, distance), ray.ori);
@@ -72,7 +72,9 @@ int	ft_get_color(t_object obj, t_ray ray, t_params prm, double distance)
 	color[0] = ft_amb_light(prm.amb.color, ft_obj_color(obj), prm.amb.ratio);
 	color[1] = ft_mult_colors(ft_diff_light(ft_obj_color(obj),
 				prm.lgh.ratio), br);
+	color[2] = ft_mult_colors(ft_obj_color(obj), ft_spec_light(norm,
+				hit_point, prm.lgh, ray.dir));
 	if (ft_shadow_gun(prm, ft_vec_add(hit_point, light_vec)) == 0)
-		return (ft_add_colors(color[0], color[1]));
+		return (ft_add_colors2(color[0], color[1], color[2]));
 	return (ft_add_colors(color[0], 0x000000));
 }

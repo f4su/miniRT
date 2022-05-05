@@ -6,7 +6,7 @@
 /*   By: ioromero <ioromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 16:56:40 by ioromero          #+#    #+#             */
-/*   Updated: 2022/05/05 17:31:49 by ioromero         ###   ########.fr       */
+/*   Updated: 2022/05/05 18:23:40 by ioromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,26 @@ double	ft_absolute_val(double i)
 	if (i >= 0)
 		return (i);
 	return (i * -1);
+}
+
+int	ft_pixel_color(t_info *info, t_ray ray, int i, int color)
+{
+	double	closer;
+	double	distance;
+	int		save_i;
+
+	closer = INFINITY;
+	save_i = -1;
+	while (++i < info->prm.num_obj)
+	{
+		distance = ft_hit(info->prm.obj[i], ray.ori, ray.dir);
+		if (distance > 0 && distance < closer)
+		{
+			closer = distance;
+			save_i = i;
+		}
+	}
+	if (save_i != -1)
+		color = ft_get_color(info->prm.obj[save_i], ray, info->prm, closer);
+	return (color);
 }
